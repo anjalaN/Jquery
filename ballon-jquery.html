@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Animation avec jQuery - Ballon</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Fonction pour changer la couleur aléatoirement
+            function randomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            // Gestion du clic sur le baloon
+            $("#balloon").click(function(event) {
+                var currentWidth = $(this).width();
+                var newWidth = (currentWidth < 450) ? currentWidth + 10 : 250; // Augmenter ou réduire selon la taille actuelle
+                $(this).animate({
+                    width: newWidth + 'px',
+                    height: newWidth + 'px',
+                    borderRadius: '50%', // Forme ronde
+                    backgroundColor: randomColor() // Nouvelle couleur aléatoire à chaque clic
+                }, 200); // 200 millisecondes pour l'animation
+                event.stopPropagation(); // Empêche le clic de se propager en dehors du `div`
+            });
+
+            // Gestion du clic en dehors du baloon
+            $(document).click(function(event) {
+                if (!$(event.target).closest("#balloon").length) {
+                    $("#balloon").animate({
+                        width: '250px',
+                        height: '250px',
+                        borderRadius: '50%', // Retour à la forme ronde initiale
+                        backgroundColor: randomColor() // Nouvelle couleur aléatoire
+                    }, 200);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="balloon" style="width: 250px; height: 250px; background-color: #FF0000; border-radius: 50%;"></div>
+</body>
+</html>
